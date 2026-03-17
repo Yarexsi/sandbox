@@ -7,7 +7,7 @@ import {
   setDispensarios
 } from "../services/rendilitrosApi.js"
 
-// 🧠 Memoria en RAM
+// 🧠 Memoria en RAM, actualizar a la bd
 const userState = {}
 
 // Estados
@@ -19,7 +19,7 @@ const STATES = {
   ESPERANDO_MODO: "ESPERANDO_MODO"
 }
 
-// 🔥 FUNCIÓN PRINCIPAL
+//  FUNCIÓN PRINCIPAL
 export async function processMessage({ text, image }, user) {
 
   // Inicializar usuario

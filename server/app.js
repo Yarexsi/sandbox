@@ -1,35 +1,17 @@
 import express from "express"
 import { processMessage } from "../bot/flow.js"
+import messageRouter from "../routes/message.js"
+import { sendWhatsAppText } from "../services/whatsappApi.js"
 
 const app = express()
 
 app.use(express.json())
 
+app.use("/message", messageRouter)
+
 // 🔹 Verificar servidor
 app.get("/", (req, res) => {
   res.send("Bot Rendichicas funcionando 🚀")
-})
-
-/*
-🔹 Endpoint para pruebas (Postman)
-*/
-app.post("/message", async (req, res) => {
-  try {
-    const { text, image } = req.body
-
-    const user = "usuario_test"
-
-    const reply = await processMessage({ text, image }, user)
-
-    return res.json({ reply })
-
-  } catch (error) {
-    console.error("Error en /message:", error)
-
-    return res.status(500).json({
-      reply: "❌ Error procesando mensaje"
-    })
-  }
 })
 
 /*
@@ -57,7 +39,8 @@ app.post("/webhook", async (req, res) => {
     console.log("Mensaje:", text || image)
     console.log("Respuesta:", reply)
 
-    // ⚠️ Aquí después enviaremos respuesta a WhatsApp (aún no implementado)
+    // Enviar respuesta a WhatsApp
+    await sendWhatsAppText(user, reply)
 
     return res.sendStatus(200)
 
@@ -71,11 +54,16 @@ app.post("/webhook", async (req, res) => {
 🔹 Verificación de webhook (Meta)
 */
 app.get("/webhook", (req, res) => {
-  const VERIFY_TOKEN = "rendichicas_token"
+  const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN
 
   const mode = req.query["hub.mode"]
   const token = req.query["hub.verify_token"]
   const challenge = req.query["hub.challenge"]
+
+  if (!VERIFY_TOKEN) {
+    console.error("WHATSAPP_VERIFY_TOKEN no está configurado")
+    return res.sendStatus(500)
+  }
 
   if (mode && token === VERIFY_TOKEN) {
     return res.status(200).send(challenge)

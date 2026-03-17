@@ -4,8 +4,8 @@ import axios from "axios"
 const SERVER = process.env.RENDILITROS_SERVER
 const AUTH_TOKEN = process.env.RENDILITROS_AUTH_TOKEN
 
-// 🔒 MODO SEGURO
-const SAFE_MODE = true
+// 🔒 MODO SEGURO (por defecto true; poner SAFE_MODE=false para usar la API real)
+const SAFE_MODE = process.env.SAFE_MODE !== "false"
 
 // ==========================
 // 🔹 MOCK HELPER
