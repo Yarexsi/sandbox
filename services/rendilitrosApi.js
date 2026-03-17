@@ -7,6 +7,12 @@ const AUTH_TOKEN = process.env.RENDILITROS_AUTH_TOKEN
 // 🔒 MODO SEGURO (por defecto true; poner SAFE_MODE=false para usar la API real)
 const SAFE_MODE = process.env.SAFE_MODE !== "false"
 
+// ✅ Headers reutilizables — no afectan SAFE_MODE
+const headers = {
+  Authorization: `Basic ${AUTH_TOKEN}`,
+  "Content-Type": "application/json"
+}
+
 // ==========================
 // 🔹 MOCK HELPER
 // ==========================
@@ -29,12 +35,16 @@ export async function enviarCodigo(noEstacion, telefono) {
   }
 
   try {
-    const res = await axios.post(`${SERVER}/EnviarCodigo`, {
-      Data: {
-        noEstacion,
-        Telefono: telefono
-      }
-    })
+    const res = await axios.post(
+      `${SERVER}/api/Bot/EnviarCodigo`,
+      {
+        Data: {
+          noEstacion,
+          Telefono: telefono
+        }
+      },
+      { headers }
+    )
 
     return res.data
 
@@ -54,12 +64,16 @@ export async function reiniciarBombas(noEstacion, codigo) {
   }
 
   try {
-    const res = await axios.post(`${SERVER}/ReiniciarMonitorBombas`, {
-      Data: {
-        noEstacion,
-        Codigo: codigo
-      }
-    })
+    const res = await axios.post(
+      `${SERVER}/api/Bot/ReiniciarMonitorBombas`,
+      {
+        Data: {
+          noEstacion,
+          Codigo: codigo
+        }
+      },
+      { headers }
+    )
 
     return res.data
 
@@ -79,12 +93,16 @@ export async function reiniciarTanques(noEstacion, telefono) {
   }
 
   try {
-    const res = await axios.post(`${SERVER}/ReiniciarMonitorTanques`, {
-      Data: {
-        noEstacion,
-        Telefono: telefono
-      }
-    })
+    const res = await axios.post(
+      `${SERVER}/api/Bot/ReiniciarMonitorTanques`,
+      {
+        Data: {
+          noEstacion,
+          Telefono: telefono
+        }
+      },
+      { headers }
+    )
 
     return res.data
 
@@ -104,13 +122,17 @@ export async function setDispensarios(noEstacion, telefono, modo) {
   }
 
   try {
-    const res = await axios.post(`${SERVER}/SetDispensarios`, {
-      Data: {
-        NoEstacion: noEstacion,
-        Telefono: telefono,
-        Modo: modo
-      }
-    })
+    const res = await axios.post(
+      `${SERVER}/api/SetDispensarios`,
+      {
+        Data: {
+          NoEstacion: noEstacion,
+          Telefono: telefono,
+          Modo: modo
+        }
+      },
+      { headers }
+    )
 
     return res.data
 
