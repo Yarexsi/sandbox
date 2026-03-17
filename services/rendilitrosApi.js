@@ -1,6 +1,8 @@
 import axios from "axios"
 
-const API_URL = "https://addesapi.rendilitros.com/api/Bot"
+
+const SERVER = process.env.RENDILITROS_SERVER
+const AUTH_TOKEN = process.env.RENDILITROS_AUTH_TOKEN
 
 // 🔒 MODO SEGURO
 const SAFE_MODE = true
@@ -27,7 +29,7 @@ export async function enviarCodigo(noEstacion, telefono) {
   }
 
   try {
-    const res = await axios.post(`${API_URL}/EnviarCodigo`, {
+    const res = await axios.post(`${SERVER}/EnviarCodigo`, {
       Data: {
         noEstacion,
         Telefono: telefono
@@ -52,7 +54,7 @@ export async function reiniciarBombas(noEstacion, codigo) {
   }
 
   try {
-    const res = await axios.post(`${API_URL}/ReiniciarMonitorBombas`, {
+    const res = await axios.post(`${SERVER}/ReiniciarMonitorBombas`, {
       Data: {
         noEstacion,
         Codigo: codigo
@@ -77,7 +79,7 @@ export async function reiniciarTanques(noEstacion, telefono) {
   }
 
   try {
-    const res = await axios.post(`${API_URL}/ReiniciarMonitorTanques`, {
+    const res = await axios.post(`${SERVER}/ReiniciarMonitorTanques`, {
       Data: {
         noEstacion,
         Telefono: telefono
@@ -102,7 +104,7 @@ export async function setDispensarios(noEstacion, telefono, modo) {
   }
 
   try {
-    const res = await axios.post(`${API_URL}/SetDispensarios`, {
+    const res = await axios.post(`${SERVER}/SetDispensarios`, {
       Data: {
         NoEstacion: noEstacion,
         Telefono: telefono,
